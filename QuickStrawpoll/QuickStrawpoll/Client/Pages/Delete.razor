@@ -1,0 +1,51 @@
+﻿@page "/delete/{PollId}"
+@using QuickStrawpoll.Shared.DTOs
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+<PageTitle>Delete</PageTitle>
+
+@if (pollDetails == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h3>Delete: @pollDetails.Title?</h3>
+
+    <ul style="list-style-type: none;">
+        @foreach (var option in pollDetails.Options)
+        {
+            <li>@option.OptionText: @option.VoteValue</li>
+        }
+    </ul>
+
+    <button class="btn btn-danger" @onclick="DeletePoll">Delete</button>
+}
+
+@code {
+    [Parameter]
+    public string PollId { get; set; }
+    private PollDTO pollDetails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        pollDetails = await Http.GetFromJsonAsync<PollDTO>($"api/polls/{PollId}");
+    }
+
+    private async Task DeletePoll()
+    {
+        // Send the DELETE request
+        var response = await Http.DeleteAsync($"api/polls/{PollId}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Vote successfully registered!");
+            NavManager.NavigateTo($"/");
+        }
+        else
+        {
+            Console.WriteLine("Error occurred while voting.");
+        }
+    }
+}

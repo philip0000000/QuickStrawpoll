@@ -1,0 +1,76 @@
+﻿@page "/vote/{PollId}"
+@using QuickStrawpoll.Shared.DTOs
+@using System.Net
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+<PageTitle>Vote</PageTitle>
+
+@if (pollDetails == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h3>@pollDetails.Title</h3>
+
+    <form @onsubmit="VoteAsync">
+        <ul style="list-style-type: none;">
+            @foreach (var option in pollDetails.Options.Select((value, index) => new { value, index }))
+            {
+                <li>
+                    <input type="radio" id="option_@option.index" name="voteOption" value="@option.index" @onchange="UpdateSelectedIndex" />
+                    <label for="option_@option.index">@option.value.OptionText: @option.value.VoteValue</label>
+                </li>
+            }
+        </ul>
+        <button type="submit" class="btn btn-success">Vote</button>
+    </form>
+}
+
+@code {
+    [Parameter]
+    public string PollId { get; set; }
+    private PollDTO pollDetails;
+    private string? selectedOptionText;
+    private int? selectedOptionIndex;
+
+    protected override async Task OnInitializedAsync()
+    {
+        pollDetails = await Http.GetFromJsonAsync<PollDTO>($"api/polls/{PollId}");
+    }
+
+    private void UpdateSelectedIndex(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var index))
+        {
+            selectedOptionIndex = index;
+        }
+    }
+
+    private async Task VoteAsync()
+    {
+        // Check if an option is selected
+        if (!selectedOptionIndex.HasValue)
+        {
+            // You can show an alert or any other kind of notification
+            Console.WriteLine("Please select an option to vote!");
+            return;
+        }
+
+        selectedOptionText = WebUtility.UrlEncode(pollDetails.Options[selectedOptionIndex.Value].OptionText);
+
+        // Send the PATCH request
+        var response = await Http.PatchAsync($"api/polls/updateVoteValue?pollId={PollId}&optionText={selectedOptionText}", null);
+        
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Vote successfully registered!");
+            NavManager.NavigateTo($"/view/{PollId}");
+        }
+        else
+        {
+            Console.WriteLine("Error occurred while voting.");
+        }
+    }
+}

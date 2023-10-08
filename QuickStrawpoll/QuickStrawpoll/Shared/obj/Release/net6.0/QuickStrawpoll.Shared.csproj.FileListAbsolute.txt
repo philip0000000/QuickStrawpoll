@@ -1,0 +1,12 @@
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\bin\Release\net6.0\QuickStrawpoll.Shared.deps.json
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\bin\Release\net6.0\QuickStrawpoll.Shared.dll
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\bin\Release\net6.0\QuickStrawpoll.Shared.pdb
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\obj\Release\net6.0\QuickStrawpoll.Shared.csproj.AssemblyReference.cache
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\obj\Release\net6.0\QuickStrawpoll.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\obj\Release\net6.0\QuickStrawpoll.Shared.AssemblyInfoInputs.cache
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\obj\Release\net6.0\QuickStrawpoll.Shared.AssemblyInfo.cs
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\obj\Release\net6.0\QuickStrawpoll.Shared.csproj.CoreCompileInputs.cache
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\obj\Release\net6.0\QuickStrawpoll.Shared.dll
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\obj\Release\net6.0\refint\QuickStrawpoll.Shared.dll
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\obj\Release\net6.0\QuickStrawpoll.Shared.pdb
+C:\MyCode\ASP.NET\QuickStrawpoll\QuickStrawpoll\Shared\obj\Release\net6.0\ref\QuickStrawpoll.Shared.dll

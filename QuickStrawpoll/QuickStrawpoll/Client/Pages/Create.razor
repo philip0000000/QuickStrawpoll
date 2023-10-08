@@ -1,0 +1,111 @@
+﻿@page "/create"
+@using QuickStrawpoll.Shared.DTOs
+@inject HttpClient httpClient
+@inject NavigationManager NavManager
+
+<PageTitle>Create Poll</PageTitle>
+
+<h3>Create Poll</h3>
+
+<div class="form-group">
+    <label for="title">Title:</label>
+    <input id="title" class="form-control" @bind="pollTitle" />
+</div>
+
+<h5 class="mt-2">Options</h5>
+@for (int i = 0; i < options.Count; i++)
+{
+    int localIndex = i;
+    <div class="form-group mb-2">
+        <input placeholder="Option" class="form-control" @bind-value="options[localIndex]" @bind-value:event="oninput" />
+    </div>
+}
+
+@if (options.Count < 10)
+{
+    <button @onclick="AddOption" class="btn btn-primary">+ Add Option</button>
+}
+@if (options.Count > 1)
+{
+    <button @onclick="DeleteOption" class="btn btn-primary mx-1">-</button>
+}
+
+<div>
+    <h5 class="mt-3">Settings</h5>
+
+    <div>
+        <input type="checkbox" @bind="allowMultipleSelections" id="multipleSelections" disabled />
+        <label for="multipleSelections">Allow selection of multiple options ⚠️ Not implemented yet</label>
+    </div>
+    <div>
+        <input type="checkbox" @bind="requireParticipantsNames" id="participantNames" disabled />
+        <label for="participantNames">Require participants' names ⚠️ Not implemented yet</label>
+    </div>
+    <div>
+        <input type="checkbox" @bind="useGooglereCAPTCHA" id="GooglereCAPTCHA" disabled />
+        <label for="participantNames">use Google reCAPTCHA ⚠️ Not implemented yet</label>
+    </div>
+
+    <div>
+        <label>
+            <input type="radio" @bind="votingMethod" name="votingMethod" disabled />
+            One vote per IP address
+        </label>
+        <label>
+            <input type="radio" @bind="votingMethod" name="votingMethod" disabled />
+            One vote per browser session
+        </label>
+        <label>
+            <input type="radio" @bind="votingMethod" name="votingMethod" disabled />
+            Allow multiple votes per person
+        </label>
+        ⚠️ Not implemented yet
+        <br />
+    </div>
+    <button @onclick="CreatePoll" class="btn btn-success mt-2">Create Poll</button>
+</div>
+
+@code {
+    private string pollTitle = "";
+    private List<string> options = new List<string> { "", "" };
+    private bool allowMultipleSelections = false;
+    private bool requireParticipantsNames = false;
+    private bool useGooglereCAPTCHA = false;
+    private string votingMethod = "ipAddress";
+
+    private void AddOption()
+    {
+        options.Add("");
+    }
+
+    private void DeleteOption()
+    {
+        options.RemoveAt(options.Count - 1);
+    }
+
+    private async Task CreatePoll()
+    {
+        var request = new PollCreationRequest
+        {
+            Title = pollTitle,
+            Options = options,
+            AllowMultipleSelections = allowMultipleSelections,
+            RequireParticipantsNames = requireParticipantsNames,
+            UseGoogleReCAPTCHA = useGooglereCAPTCHA,
+            VotingMethod = votingMethod
+        };
+
+        // Send the POST request
+        var response = await httpClient.PostAsJsonAsync("api/polls", request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Vote successfully registered!");
+            NavManager.NavigateTo($"/view-polls");
+        }
+        else
+        {
+            Console.WriteLine("Error occurred while voting.");
+        }
+    }
+}

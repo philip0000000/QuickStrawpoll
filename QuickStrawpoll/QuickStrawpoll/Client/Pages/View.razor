@@ -1,0 +1,32 @@
+﻿@page "/view/{PollId}"
+@using QuickStrawpoll.Shared.DTOs
+@inject HttpClient Http
+
+<PageTitle>View</PageTitle>
+
+@if (pollDetails == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h3>@pollDetails.Title</h3>
+
+    <ul style="list-style-type: none;">
+        @foreach (var option in pollDetails.Options)
+        {
+            <li>@option.OptionText: @option.VoteValue</li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public string PollId { get; set; }
+    private PollDTO pollDetails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        pollDetails = await Http.GetFromJsonAsync<PollDTO>($"api/polls/{PollId}");
+    }
+}

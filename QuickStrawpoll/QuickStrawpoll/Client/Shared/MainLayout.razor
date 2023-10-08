@@ -1,0 +1,22 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <!--
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+    -->
+
+    <main>
+        <div class="top-row">
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="Create">Create</NavLink>
+            <NavLink href="View-Polls">View polls</NavLink>
+            <NavLink href="About">About</NavLink>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>

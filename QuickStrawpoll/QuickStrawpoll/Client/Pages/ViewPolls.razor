@@ -1,0 +1,45 @@
+﻿@page "/view-polls"
+@using QuickStrawpoll.Shared.DTOs
+@inject HttpClient Http
+
+<PageTitle>View polls</PageTitle>
+
+<h3>View polls</h3>
+
+@if (polls == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Polls</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var poll in polls)
+            {
+                <tr>
+                    <td title="Id: @poll.PollId">@poll.Title</td>
+                    <td>
+                        <a href="/vote/@poll.PollId">Vote</a> |
+                        <a href="/view/@poll.PollId">View</a> |
+                        <a href="/delete/@poll.PollId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<PollDTO> polls;
+
+    protected override async Task OnInitializedAsync()
+    {
+        polls = await Http.GetFromJsonAsync<List<PollDTO>>("api/polls");
+    }
+}
